@@ -1,0 +1,7 @@
+[
+    {
+        "userarn" : "arn:aws:iam::061043050175:user/terraform",
+        "username" : "terraform",
+        "groups" : ["system:masters"]
+    }
+]
