@@ -16,6 +16,8 @@ variable "project_name" {
 
 locals {
   cluster_name = "${var.project_name}-eks-${terraform.workspace}"
+
+  spark_role_name      = "${var.project_name}-spark-role-${terraform.workspace}"
   
   map_roles = jsondecode(file("${path.module}/environments/${terraform.workspace}/eks_roles_map.json"))
 
