@@ -5,3 +5,10 @@
 3 - Baixar e instalar o chocolatey: https://chocolatey.org/install#individual
 
 4 - Baixar e instalar o Terraform CLI: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+
+
+## TODO
+- Crawler parquet para athena
+- Crawler Delta para athena
+- Criação de db no athena
+- Case do spark streaming, ond fique mais claro, landing, bronze, silver, e gold
