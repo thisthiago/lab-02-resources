@@ -1,0 +1,74 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "glue:*",
+                "iam:ListRoles",
+                "iam:ListUsers",
+                "iam:ListGroups",
+                "iam:ListRolePolicies",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "iam:ListAttachedRolePolicies",
+                "s3:ListAllMyBuckets",
+                "s3:ListBucket",
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "cloudformation:DescribeStacks",
+                "cloudformation:GetTemplateSummary",
+                "cloudwatch:GetMetricData",
+                "cloudwatch:ListDashboards",
+                "tag:GetResources"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        },
+        {
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:iam::*:role/service-role/AWSGlueServiceRole*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "iam:PassedToService": [
+                        "glue.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:GetLogEvents",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:*:/aws-glue/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:DeleteStack"
+            ],
+            "Resource": "arn:aws:cloudformation:*:*:stack/aws-glue*/*"
+        }
+    ]
+}
