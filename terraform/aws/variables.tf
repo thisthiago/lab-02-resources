@@ -14,13 +14,13 @@ variable "project_name" {
   default = "lab-02"
 }
 
+variable "bucket_names" {
+  description = "Lista de nomes de buckets S3 a serem criados"
+  type        = list(string)
+  default     = ["landing", "bronze", "silver", "gold", "athena-results"] 
+}
+
 locals {
-  cluster_name = "${var.project_name}-eks-${terraform.workspace}"
-
-  spark_role_name      = "${var.project_name}-spark-role-${terraform.workspace}"
-  
-  map_roles = jsondecode(file("${path.module}/environments/${terraform.workspace}/eks_roles_map.json"))
-
   common_tags = {
     Environment = terraform.workspace
     Project     = var.project_name

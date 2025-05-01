@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "glue:*",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "cloudwatch:PutMetricData",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "kms:Decrypt"
+      ],
+      "Resource": [
+        "*",
+        "arn:aws:iam::061043050175:role/AWSGlueStudioRole"
+      ]
+    }
+  ]
+}
