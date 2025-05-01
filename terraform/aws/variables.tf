@@ -20,8 +20,17 @@ variable "bucket_names" {
   default     = ["landing", "bronze", "silver", "gold", "athena-results"] 
 }
 
+variable "glue_tables" {
+  type = map(map(map(list(string))))
+}
+
 locals {
   lambda_function_root_path  = "/home/thiago/aula-01/lab-02-resources/app/scripts/" #Alterar
+
+  glue_crawler_role_arn = {
+    dev  = "arn:aws:iam::${var.aws_account_id}:role/dev-glue-crawler-role"
+  }
+
   common_tags = {
     Environment = terraform.workspace
     Project     = var.project_name
