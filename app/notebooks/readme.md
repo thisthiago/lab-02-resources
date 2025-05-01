@@ -1,3 +1,5 @@
+Donwloado do jar, e subir no s3
+https://repo1.maven.org/maven2/io/delta/delta-core_2.12/2.3.0/delta-core_2.12-2.3.0.jar
 
 Após importar o notebook em ETL Jobs → Notebooks  
 

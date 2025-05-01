@@ -21,6 +21,7 @@ variable "bucket_names" {
 }
 
 locals {
+  lambda_function_root_path  = "/home/thiago/aula-01/lab-02-resources/app/scripts/" #Alterar
   common_tags = {
     Environment = terraform.workspace
     Project     = var.project_name
