@@ -8,7 +8,5 @@
 
 
 ## TODO
-- Crawler parquet para athena
-- Crawler Delta para athena
-- Criação de db no athena
-- Case do spark streaming, ond fique mais claro, landing, bronze, silver, e gold
+- Case delta lake com medalion architeture landing, bronze, silver, e gold
+- App para exemplificar o spark streaming
