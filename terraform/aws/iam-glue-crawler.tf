@@ -26,7 +26,3 @@ resource "aws_iam_policy_attachment" "glue_crawler_attachment" {
   roles      = [aws_iam_role.glue_crawler_role.name]
   policy_arn = aws_iam_policy.glue_crawler_policy.arn
 }
-
-output "glue_crawler_role_arn" {
-  value = aws_iam_role.glue_crawler_role.arn
-}
