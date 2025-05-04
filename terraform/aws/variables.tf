@@ -19,6 +19,17 @@ variable "infra_bucket" {
   default = "tfstate-lab-02-infra-us-east-1"
 }
 
+variable "vpc_cidr" {
+  type = map(string)
+}
+
+variable "vpc_private_subnets" {
+  type = map(list(string))
+}
+
+variable "vpc_public_subnets" {
+  type = map(list(string))
+}
 
 variable "studio_user_name" {
   description = "The IAM user or role ARN that will be used for EMR Studio session mapping"
