@@ -12,3 +12,4 @@ Vá até o Console do Glue → Jobs → seu job → "Script parameters / Job par
 : TODO
 Notebbok delta lake
 Nootebbok spark streaming
+Definir o que vai ser a entrega final
