@@ -8,3 +8,7 @@ Vá até o Console do Glue → Jobs → seu job → "Script parameters / Job par
 1. --datalake-formats delta
 2. --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension
 3. --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog
+
+: TODO
+Notebbok delta lake
+Nootebbok spark streaming
