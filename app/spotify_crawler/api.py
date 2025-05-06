@@ -11,6 +11,7 @@ from main import (
     salvar_dataframe_no_sqlite,
     gerar_usuarios_fake,
     criar_tabela_plays,
+    criar_tabela_usuarios,
     gerar_reproducoes
 )
 
@@ -21,6 +22,25 @@ app = FastAPI(title="🎵 API Spotify Fake")
 
 def get_conn():
     return criar_conexao(DB_PATH)
+
+@app.on_event("startup")
+def setup_banco():
+    with criar_conexao(DB_PATH) as conn:
+        criar_tabela_usuarios(conn)
+        criar_tabela_plays(conn)
+
+        # Verifica se já tem dados na tabela
+        if pd.read_sql("SELECT COUNT(*) as total FROM usuarios", conn).at[0, "total"] == 0:
+            df_usuarios = gerar_usuarios_fake(10)
+            salvar_dataframe_no_sqlite(df_usuarios, "usuarios", conn)
+
+        if pd.read_sql("SELECT name FROM sqlite_master WHERE type='table' AND name='spotify_data'", conn).empty:
+            tabela_spotify = obter_tabela_spotify(URL_SPOTIFY)
+            if tabela_spotify is not None:
+                df_spotify = processar_tabela_spotify(tabela_spotify)
+                df_spotify.to_sql("spotify_data", conn, index=False, if_exists="replace")
+
+        gerar_reproducoes(conn)
 
 
 @app.post("/crawler/spotify")

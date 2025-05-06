@@ -14,6 +14,7 @@ URL_SPOTIFY = "https://kworb.net/spotify/country/global_daily.html"
 def criar_conexao(db_path):
     """Cria conexão com o banco de dados SQLite."""
     return sqlite3.connect(db_path)
+    
 
 
 def obter_tabela_spotify(url):
@@ -33,12 +34,12 @@ def processar_tabela_spotify(df):
 
 
 def salvar_dataframe_no_sqlite(df, tabela, conn):
-    """Salva um DataFrame como tabela no banco SQLite."""
-    df.to_sql(tabela, conn, index=False, if_exists="replace")
+    """Salva um DataFrame como tabela no banco SQLite (adicionando, sem sobrescrever)."""
+    df.to_sql(tabela, conn, index=False, if_exists="append")
 
 
 def gerar_usuarios_fake(n=10):
-    """Gera usuários falsos com nome, email e timestamp."""
+    """Gera usuários falsos com nome, email e timestamp (sem id)."""
     fake_pt = Faker("pt_BR")
     fake_en = Faker("en_US")
     fake_es = Faker("es_ES")
@@ -55,7 +56,7 @@ def gerar_usuarios_fake(n=10):
     
     usuarios = []
     
-    for i in range(n):
+    for _ in range(n):
         locale, fake = random.choice(locales)
         
         if locale in ["fr_FR", "de_DE"]:  
@@ -71,13 +72,27 @@ def gerar_usuarios_fake(n=10):
             nome = random.choice(titulos) + " " + nome
         
         usuarios.append({
-            "id": i + 1,
             "nome": nome,
             "email": fake.email(),
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
     
     return pd.DataFrame(usuarios)
+
+
+def criar_tabela_usuarios(conn):
+    """Cria a tabela de usuários, com id auto-incrementável."""
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            email TEXT,
+            timestamp DATETIME
+        );
+    """)
+    conn.commit()
+
 
 def criar_tabela_plays(conn):
     """Cria a tabela de reproduções (plays)."""
@@ -125,17 +140,18 @@ def main():
         tabela_spotify = obter_tabela_spotify(URL_SPOTIFY)
         if tabela_spotify is not None:
             df_spotify = processar_tabela_spotify(tabela_spotify)
-            salvar_dataframe_no_sqlite(df_spotify, "spotify_data", conn)
+            df_spotify.to_sql("spotify_data", conn, index=False, if_exists="replace")
             print("🎵 Spotify:")
             print(pd.read_sql("SELECT * FROM spotify_data LIMIT 5", conn))
         else:
             print("Nenhuma tabela encontrada na página do Spotify.")
 
         # Etapa 2: Usuários
+        criar_tabela_usuarios(conn)
         df_usuarios = gerar_usuarios_fake(10)
         salvar_dataframe_no_sqlite(df_usuarios, "usuarios", conn)
         print("\n👤 Usuários:")
-        print(pd.read_sql("SELECT * FROM usuarios LIMIT 5", conn))
+        print(pd.read_sql("SELECT * FROM usuarios ORDER BY id DESC LIMIT 5", conn))
 
         # Etapa 3: Reproduções
         criar_tabela_plays(conn)
@@ -146,6 +162,7 @@ def main():
             FROM plays p
             JOIN usuarios u ON u.id = p.id_usuario
             JOIN spotify_data s ON s.id = p.id_musica
+            ORDER BY p.id DESC
             LIMIT 5;
         """, conn))
 
