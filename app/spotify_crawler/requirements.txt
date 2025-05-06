@@ -1,0 +1,8 @@
+pandas
+faker
+requests
+html5lib
+lxml
+uvicorn
+streamlit
+fastapi
