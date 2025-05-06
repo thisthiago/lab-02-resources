@@ -1,2 +1,4 @@
 /terraform/aws/.terraform/**
 /terraform/aws/zip/**
+/app/spotify_crawler/__pycache__/**
+/app/spotify_crawler/data/**
